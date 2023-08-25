@@ -1,0 +1,11 @@
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+   var data = $.ajax({
+  url: "http://127.0.0.1:8081/absences",
+  context: document.body
+}).done(function() {
+  $( this ).addClass( "done" );
+});
+   console.log(data)
+</script>

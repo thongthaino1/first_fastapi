@@ -1,0 +1,50 @@
+h1 {
+    color: blue;
+}
+#header {
+background-color:white;
+    height:50px;
+color:black;
+text-align:center;
+padding-bottom:5px;
+border: 100px;
+border-color: black;
+}
+#nav {
+line-height:30px;
+/*background-color:rebeccapurple;*/
+height:500px;
+    /*margin-bottom:0px ;*/
+    background-color:blueviolet;
+    color: white;
+width:100px;
+float:left;
+padding:5px;
+}
+#section {
+width:350px;
+float:left;
+padding:10px;
+}
+#footer {
+background-color:black;
+color:white;
+clear:both;
+text-align:center;
+padding:5px;
+}
+.check{
+
+  height: 100px;
+  width: 100px;
+  background-color: cornflowerblue;
+    color: white;
+  border-radius: 50%;
+  display: inline-block;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+}
+#nav>a>span{
+    color: white;
+}

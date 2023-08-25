@@ -1,0 +1,165 @@
+{% extends "main.html" %}
+
+{% block content %}
+<style>
+    #tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: 100%;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+    .fc-daygrid-day-events {
+        /*visibility: hidden;*/
+    }
+</style>
+<div class="app-main" id="main">
+    <!-- begin container-fluid -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <span id="tooltiptext">Tooltip text</span>
+            <button data-toggle="modal" data-target="#defaultModal" hidden id="click">View Modal</button>
+
+
+        </div>
+        <!-- end row -->
+        <!-- Default -->
+        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModal"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <h1>Thông tin làm việc</h1> <br>
+                        <h2><p>Ngày làm việc :<b id="working_date_p" style="text-decoration: black">Chưa cập nhật</b>
+                        </p></h2>
+                        <br>
+                        <p>Giờ vào : <b id="check_in_p">Chưa cập nhật</b></p><br>
+                        <p>Giờ ra : <b id="check_out_p">Chưa cập nhật</b></p><br>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Scrolling -->
+        <input id="event" value="{{event}}" hidden>
+        <!--        {{event}}-->
+
+        <!-- end row -->
+        <!-- begin row -->
+        {% if current_user.role_id != 3 %}
+        <!--        {{event}}-->
+        <div class="dropdown" id="staff_menu">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Quan ly nhan vien
+
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <!--                {{data_name_id}}-->
+                {% for i in data_name_id %}
+                <a href="http://127.0.0.1:8081/workings/user/{{i.id}}">
+                    <button class="dropdown-item" type="button">{{i.name}}</button>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row editable-wrapper">
+
+            <div class="col-lg-12 ">
+                <div class="card card-statistics">
+                    <div class="card-body">
+                        <div id='calendar'></div>
+                        <script>
+
+                            // staff_menu.innerHTML("sdfd");
+
+
+                            var event = document.getElementById('event').value;
+                            let result = event.replace(/\'/gi, "\"");
+
+
+                            const obj = JSON.parse(result);
+
+
+                            console.log(result)
+                            var calendarEl = document.getElementById('calendar');
+                            var calendar = new FullCalendar.Calendar(calendarEl, {
+                                initialView: 'dayGridMonth',
+                                events: obj,
+                                eventMouseEnter: function (info) {
+
+                                    element = document.getElementById("tooltiptext")
+
+                                    element.style = "visibility: visible;"
+                                    var tooltipText = document.getElementById("tooltiptext");
+
+
+                                    bgcolor = info.event.backgroundColor
+                                    console.log(bgcolor)
+                                    if (bgcolor == "black" || bgcolor == "pink") {
+                                        tooltipText.innerHTML = info.event.extendedProps.reason
+                                    }
+
+                                    if (bgcolor == "red" || bgcolor == "blue") {
+                                        console.log(info.event.title);
+                                        tooltipText.innerHTML = info.event.title;
+                                    }
+
+                                    info.el.appendChild(tooltipText);
+                                },
+                                eventMouseLeave: function (info) {
+                                    element = document.getElementById("tooltiptext")
+                                    element.style = "visibility: hidden;"
+
+                                }
+                            });
+
+                            calendar.render();
+                            // const textNode = document.createTextNode("Water");
+                            // newNode.appendChild(textNode);
+
+                            const list = document.getElementById("fc-dom-1");
+                            // list.insertBefore(newNode, list.children[0]);
+
+                            // console.log(staff_menu, 123232)
+                            // var div = document.createElement('div');
+                            // div.appendChild(document.createTextNode('top div'));
+                            //
+                            // staff_menu.appendChild(div);
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- end row -->
+    </div>
+
+
+    {% endblock %}

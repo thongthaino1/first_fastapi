@@ -1,0 +1,289 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<div class="app-main" id="main">
+    <!-- begin container-fluid -->
+    <div class="container-fluid">
+        <!-- begin row -->
+        <div class="row">
+            <div class="card-heading">
+                <div class="card card-statistics">
+            <div class="card-heading">
+                <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModal" style="display: none" aria-modal="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Woohoo, you're reading this text in a modal!
+                                        <form>
+
+                    <div class="form-group">
+                        <!--                        <label for="type" >Loại nghỉ</label>-->
+
+                        <!--                        <select class="custom-select my-1 mr-sm-2" id = "flag_allow" >-->
+                        <!--                                                <option value="0">Chọn</option>-->
+                        <!--                                                <option selected value="1">Có phép</option>-->
+                        <!--                                                <option value="0">Không phép</option>-->
+                        <!--                        </select>-->
+                        <label for="reason">Lý do</label>
+                        <textarea class="form-control" id="reason_add_wk"
+                                  aria-describedby="emailHelp" placeholder="Nhập lý do"></textarea>
+
+                        <label for="exampleInputPassword1">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" id="time_from_add_wk" value="2023-09-01"
+                               placeholder="Password">
+
+                        <label for="exampleInputPassword1">Giờ bắt đầu</label>
+                        <input type="time" class="form-control" id="hour_from_add_wk" value="08:00"
+                               placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="time_to_add_wk" value="2023-09-01"
+                               placeholder="Password">
+                        <label for="exampleInputPassword1">Giờ kết thúc</label>
+                        <input type="time" class="form-control" id="hour_to_add_wk" value="17:00"
+                               placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tổng số ngày bổ sung</label>
+                        <input type="number" class="form-control" id="sum_absen_days_add_wk" readonly value="0"
+                        >
+                    </div>
+                    <div class="alert alert-primary" role="alert" id="alert_validate_add_wk" style="display: none">
+                        gyhjgjg
+                    </div>
+                </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        <button id="submit_add_wk" type="submit" class="btn btn-success">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <div class="modal fade" id="defaultModal1" tabindex="-1" role="dialog" aria-labelledby="defaultModal1" style="display: none" aria-modal="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Woohoo, you're reading this text in a modal!
+                                        <form>
+
+                    <div class="form-group">
+                        <label for="type" >Loại nghỉ</label>
+
+                        <select class="custom-select my-1 mr-sm-2" id = "flag_allow" >
+                                                <option value="0">Chọn</option>
+                                                <option selected value="1">Có phép</option>
+                                                <option value="0">Không phép</option>
+                        </select>
+                        <label for="reason">Lý do</label>
+                        <textarea class="form-control" id="reason"
+                                  aria-describedby="emailHelp" placeholder="Nhập lý do"></textarea>
+
+                        <label for="exampleInputPassword1">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" id="time_from" value="2023-09-01"
+                               placeholder="Password">
+
+                        <label for="exampleInputPassword1">Giờ bắt đầu</label>
+                        <input type="time" class="form-control" id="hour_from" value="08:00"
+                               placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="time_to" value="2023-09-01"
+                               placeholder="Password">
+                        <label for="exampleInputPassword1">Giờ kết thúc</label>
+                        <input type="time" class="form-control" id="hour_to" value="17:00"
+                               placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tổng số ngày nghỉ</label>
+                        <input type="number" class="form-control" id="sum_absen_days" readonly value="0"
+                        >
+                        <label for="exampleInputPassword1">Số ngày nghỉ phép còn lại </label>
+                        <input type="number" readonly class="form-control" id="rest_allowed_day"
+                               value="{{user.rest_allowed_day}}">
+                    </div>
+                     <div class="alert alert-primary" role="alert" id="alert_validate" style="display: none">
+                        dfdsf
+                    </div>
+                </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        <button id="submit_absence" type="submit"  class="btn btn-success">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!--                <button >View Modal</button>-->
+                <span class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tạo yêu cầu
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" onclick="$('#defaultModal'.show())" data-toggle="modal" data-target="#defaultModal">Bổ sung công </a>
+                        <a class="dropdown-item" onclick="$('#defaultModal1'.show())" data-toggle="modal" data-target="#defaultModal1">Nghỉ phép </a>
+                    </div>
+                    </span><span class="dropdown" >
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton11"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Lịch sử
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton11">
+                        <a class="dropdown-item" href="/absences?limit=100">Nghỉ phép </a>
+                        <a class="dropdown-item" href="/add_wks?limit=100">Bổ sung công</a>
+                    </div>
+                </span>
+
+
+<!--                    <h4 class="card-title">Đăng Ký Nghỉ Phép</h4>-->
+                </div>
+        </div>
+
+
+<!--                    <h4 class="card-title">Đăng Ký Nghỉ Phép</h4>-->
+                </div>
+            <div class="col-md-12 m-b-30">
+                <!-- begin page title -->
+                <div class="d-block d-sm-flex flex-nowrap align-items-center">
+                    <div class="page-title mb-2 mb-sm-0">
+                        <h1>Lịch sử bổ sung công</h1>
+                    </div>
+                </div>
+                <!-- end page title -->
+            </div>
+        </div>
+        <!-- end row -->
+        <!-- begin row -->
+        <div class="row editable-wrapper">
+            <div class="col-lg-12 ">
+                <div class="card card-statistics">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table display responsive nowrap table-light table-bordered">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>Đơn</th>
+                                    <th>Người làm đơn</th>
+                                    <th>Số ngày bổ sung</th>
+                                    <th>Thời gian từ</th>
+                                    <th>Thời gian đến</th>
+                                    <th>Lý do</th>
+                                    <th>Người cập nhật</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for field in response["data"] %}
+                                <tr>
+                                    <td> Nghỉ phép</td>
+                                    {% set absence_days = field.time_to - field.time_from %}
+                                    {% if field.id %} {% set id = field.id %} {% endif %}
+                                    {%set plus_hours = absence_days.seconds/60/60%}
+                                    {% if plus_hours <= 4 and plus_hours >=1%}
+                                    {% set day_absence = absence_days.days + 0.5 %}
+                                    {% elif plus_hours > 4 %}
+                                    {% set day_absence = absence_days.days + 1 %}
+                                    {% else %}
+                                    {% set day_absence = absence_days.days %}
+                                    {% endif %}
+                                    <td> {{field.user_name}}</td>
+<!--                                    <td>-->
+<!--                                        {% if field.flag_allow == 1%}-->
+<!--                                            <label class="badge badge-pill badge-success" size="50px" style="margin-bottom : 10px ">Có phép</label>-->
+<!--                                        {% else %}-->
+<!--                                            <label class="badge badge-pill badge-danger">Không phép</label>-->
+<!--                                        {% endif %}-->
+<!--                                    </td>-->
+                                    <td> {{day_absence}}</td>
+                                    <td> {% if field.time_from %} {{field.time_from}} {% endif %}</td>
+                                    <td> {% if field.time_to %} {{field.time_to}} {% endif %}</td>
+                                    <td> {% if field.reason %}
+                                        {{field.reason}}
+                                        {% endif %}
+                                    </td>
+                                    <td> {% if field.accept_id %}
+                                        {{field.accepter}}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+
+
+                                         {% if field.accepted == 0%}
+                                        <label width="40px" class="badge badge-primary-inverse">Dag cho</label>
+
+
+                                        {% elif field.accepted == 1 %}
+                                        <label width="40px" class="badge badge-info">Đã xét duyệt</label>
+                                        {% elif field.accepted == 2 %}
+                                        <label type="button" class="badge badge-warning">Đã từ chối</label>
+
+                                        <p style="color:red "></p>
+                                        {% endif %}
+
+
+
+
+
+                                    </td>
+
+
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container-fluid -->
+</div>
+<script>
+    function accept_add_wks(value) {
+        id = value.split(",")[0];
+        flag = value.split(",")[1];
+        data = {"accepted": flag}
+        url_create = "/add_wks/" + id
+        console.log(data)
+        $.ajax({
+            data: JSON.stringify(data),
+            url: url_create,
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+            , success: () => {
+                console.log("CAll API OK")
+            }
+        }).done(function (res) {
+            alert("Process successfully")
+            location.reload();
+            // window.location.replace("http://127.0.0.1:8081/workings");
+
+        });
+
+
+    }
+
+</script>
+
+{% endblock %}

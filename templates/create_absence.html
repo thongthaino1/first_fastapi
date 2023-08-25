@@ -1,0 +1,94 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="app-main" id="main">
+    <!-- begin container-fluid -->
+    <div class="container-fluid">
+
+        <div class="card card-statistics">
+            <div class="card-header">
+                <div class="card-heading">
+                <span class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tạo yêu cầu
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/absences_create">Nghỉ phép </a>
+                        <a class="dropdown-item" href="/add_wks_create">Bổ sung công</a>
+                    </div>
+                    </span><span class="dropdown" >
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton11"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Lịch sử
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton11">
+                        <a class="dropdown-item" href="/absences?limit=100">Nghỉ phép </a>
+                        <a class="dropdown-item" href="/add_wks?limit=100">Bổ sung công</a>
+                    </div>
+                </span>
+
+
+<!--                    <h4 class="card-title">Đăng Ký Nghỉ Phép</h4>-->
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+
+                    <div class="form-group">
+                        <label for="type" >Loại nghỉ</label>
+
+                        <select class="custom-select my-1 mr-sm-2" id = "flag_allow" >
+                                                <option value="0">Chọn</option>
+                                                <option selected value="1">Có phép</option>
+                                                <option value="0">Không phép</option>
+                        </select>
+                        <label for="reason">Lý do</label>
+                        <textarea class="form-control" id="reason"
+                                  aria-describedby="emailHelp" placeholder="Nhập lý do"></textarea>
+
+                        <label for="exampleInputPassword1">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" id="time_from" value="2023-09-01"
+                               placeholder="Password">
+
+                        <label for="exampleInputPassword1">Giờ bắt đầu</label>
+                        <input type="time" class="form-control" id="hour_from" value="08:00"
+                               placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="time_to" value="2023-09-01"
+                               placeholder="Password">
+                        <label for="exampleInputPassword1">Giờ kết thúc</label>
+                        <input type="time" class="form-control" id="hour_to" value="17:00"
+                               placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tổng số ngày nghỉ</label>
+                        <input type="number" class="form-control" id="sum_absen_days" readonly value="0"
+                        >
+                        <label for="exampleInputPassword1">Số ngày nghỉ phép còn lại </label>
+                        <input type="number" readonly class="form-control" id="rest_allowed_day"
+                               value="{{user.rest_allowed_day}}">
+                    </div>
+                    <button id="submit_absence" type="submit" class="btn btn-primary">Submit</button>
+                     <div class="alert alert-primary" role="alert" id="alert_validate" style="display: none">
+                        dfdsf
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    date = new Date()
+    str_date_today = date.toISOString().split('T')[0]
+    console.log(str_date_today)
+    $("#time_to").val(str_date_today)
+    $("#time_from").val(str_date_today)
+</script>
+
+{% endblock %}
+

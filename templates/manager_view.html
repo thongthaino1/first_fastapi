@@ -1,0 +1,258 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="app-main" id="main">
+    <!-- begin container-fluid -->
+    <div class="container-fluid">
+        <!-- begin row -->
+        <div class="row">
+            <div class="card-heading">
+
+                    <span class="dropdown">
+<!--                    {{response}}-->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton11">
+                        <a class="dropdown-item" href="/absences_manage">Nghỉ phép </a>
+                        <a class="dropdown-item" href="/add_wks_manage">Bổ sung công</a>
+                    </div>
+                </span>
+
+
+                <!--                    <h4 class="card-title">Đăng Ký Nghỉ Phép</h4>-->
+            </div>
+            <div class="col-md-12 m-b-30">
+                <!-- begin page title -->
+                <div class="d-block d-sm-flex flex-nowrap align-items-center">
+                    <div class="page-title mb-2 mb-sm-0">
+                        <h1>Quản lý bổ sung công / nghỉ phép</h1>
+
+                    </div>
+                </div>
+                <!-- end page title -->
+            </div>
+        </div>
+        <!-- end row -->
+        <!-- begin row -->
+        <div class="row editable-wrapper">
+            <div class="col-lg-12 ">
+                <div class="card card-statistics">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table display responsive nowrap table-light table-bordered">
+
+                                <thead class="thead-light">
+                                <tr>
+
+                                    <th>Đơn</th>
+                                    <th>Người làm đơn</th>
+                                    <th>Loại nghỉ</th>
+                                    <th>Số ngày bổ sung</th>
+                                    <th>Thời gian từ</th>
+                                    <th>Thời gian đến</th>
+                                    <th>Lý do</th>
+                                    <th>Người cập nhật</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+
+                                {% if response["data_absence"] %}
+                                {% for field in response["data_absence"] %}
+                                <tr>
+                                    <td>Nghỉ phép</td>
+                                    {% set absence_days = field.time_to - field.time_from %}
+                                    {% if field.id %} {% set id = field.id %} {% endif %}
+                                    {%set plus_hours = absence_days.seconds/60/60%}
+                                    {% if plus_hours <= 4 and plus_hours >=1%}
+                                    {% set day_absence = absence_days.days + 0.5 %}
+                                    {% elif plus_hours > 4 %}
+                                    {% set day_absence = absence_days.days + 1 %}
+                                    {% else %}
+                                    {% set day_absence = absence_days.days %}
+                                    {% endif %}
+                                    <td> {{field.user_name}}</td>
+                                    <td>
+                                        {% if field.flag_allow == 1%}
+                                        <label class="badge badge-pill badge-success" size="50px"
+                                               style="margin-bottom : 10px ">Có phép</label>
+                                        {% else %}
+                                        <label class="badge badge-pill badge-danger">Không phép</label>
+                                        {% endif %}
+                                    </td>
+                                    <td> {{day_absence}}</td>
+                                    <td> {% if field.time_from %} {{field.time_to.strftime("%H:%M %Y-%m-%d ")}} {% endif
+                                        %}
+                                    </td>
+                                    <td> {% if field.time_to %} {{field.time_to.strftime("%H:%M %Y-%m-%d ")}} {% endif
+                                        %}
+                                    </td>
+                                    <td> {% if field.reason %}
+                                        {{field.reason}}
+                                        {% endif %}
+                                    </td>
+                                    <td> {% if field.accept_id %}
+                                        {{field.accepter}}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+
+
+                                        {% if field.accepted == 0%}
+                                        {% if current_user.role_id in (1,2)%}
+                                        <button onclick="accept_absences(this.value)"
+                                                value="{{id}},1"
+                                                type="button" class="btn btn-success"
+                                                style="margin-bottom : 10px">
+                                            Đồng ý
+                                        </button>
+                                        <br>
+                                        <button onclick="accept_absences(this.value)" value="{{id}},2" type="button"
+                                                class="btn btn-danger">Từ chối
+                                        </button>
+                                        {% else %}
+                                        <label width="40px" type="button" class="badge badge-secondary">Đang chờ</label>
+                                        {% endif %}
+
+                                        {% elif field.accepted == 1 %}
+                                        <label width="40px" class="badge badge-info">Đã xét duyệt</label>
+                                        {% elif field.accepted == 2 %}
+                                        <label type="button" class="badge badge-warning">Đã từ chối</label>
+
+                                        <p style="color:red "></p>
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                                  {% if response["data_add_wk"] %}
+                                {% for field in response["data_add_wk"] %}
+                                <tr>
+                                    <td>Bổ sung công</td>
+                                    {% set absence_days = field.time_to - field.time_from %}
+                                    {% if field.id %} {% set id = field.id %} {% endif %}
+                                    {%set plus_hours = absence_days.seconds/60/60%}
+                                    {% if plus_hours <= 4 and plus_hours >=1%}
+                                    {% set day_absence = absence_days.days + 0.5 %}
+                                    {% elif plus_hours > 4 %}
+                                    {% set day_absence = absence_days.days + 1 %}
+                                    {% else %}
+                                    {% set day_absence = absence_days.days %}
+                                    {% endif %}
+                                    <td> {{field.user_name}}</td>
+                                    <td></td>
+                                    <td> {{day_absence}}</td>
+                                    <td> {% if field.time_from %} {{field.time_from}} {% endif %}</td>
+                                    <td> {% if field.time_to %} {{field.time_to}} {% endif %}</td>
+                                    <td> {% if field.reason %}
+                                        {{field.reason}}
+                                        {% endif %}
+                                    </td>
+                                    <td> {% if field.accept_id %}
+                                        {{field.accepter}}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+
+
+                                        {% if field.accepted == 0%}
+                                        {% if current_user.role_id in (1,2)%}
+                                        <button onclick="accept_add_wks(this.value)"
+                                                value="{{id}},1"
+                                                type="button" class="btn btn-success"
+                                                style="margin-bottom : 10px">
+                                            Đồng ý
+                                        </button>
+                                        <br>
+                                        <button onclick="accept_add_wks(this.value)" value="{{id}},2" type="button"
+                                                class="btn btn-danger">Từ chối
+                                        </button>
+                                        {% else %}
+                                        <label width="40px" type="button" class="badge badge-secondary">Đang chờ</label>
+                                        {% endif %}
+
+                                        {% elif field.accepted == 1 %}
+                                        <label width="40px" class="badge badge-info">Đã xét duyệt</label>
+                                        {% elif field.accepted == 2 %}
+                                        <label type="button" class="badge badge-warning">Đã từ chối</label>
+
+                                        <p style="color:red "></p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container-fluid -->
+</div>
+<script>
+    function accept_add_wks(value) {
+        id = value.split(",")[0];
+        flag = value.split(",")[1];
+        data = {"accepted": flag}
+        url_create = "/add_wks/" + id
+        console.log(data)
+        $.ajax({
+            data: JSON.stringify(data),
+            url: url_create,
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+            , success: () => {
+                console.log("CAll API OK")
+            }
+        }).done(function (res) {
+            alert("Process successfully")
+            location.reload();
+            // window.location.replace("http://127.0.0.1:8081/workings");
+
+        });
+
+
+    }
+    function accept_absences(value) {
+        id = value.split(",")[0];
+        flag = value.split(",")[1];
+        data = {"accepted": flag}
+        url_create = "/absences/" + id
+        console.log(data)
+        $.ajax({
+            data: JSON.stringify(data),
+            url: url_create,
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+            , success: () => {
+                console.log("CAll API OK")
+            }
+        }).done(function (res) {
+            alert("Process successfully")
+            location.reload();
+            // window.location.replace("http://127.0.0.1:8081/workings");
+
+        });
+
+
+    }
+
+
+</script>
+
+{% endblock %}
